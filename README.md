@@ -1,2 +1,2 @@
-# infrared
-Web App infrastructure
+# Infrared
+Web App Infrastructure Template
