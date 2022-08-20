@@ -1,0 +1,11 @@
+version: '3.3'
+
+services:
+  backend:
+    build: "./back"
+    ports:
+      - "8000:80"
+    volumes:
+      - ./back:/app/
+    env_file:
+      - ./back/.env

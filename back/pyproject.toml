@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "app"
+version = "0.1.0"
+description = ""
+authors = ["Rafał Łazicki <rafal.lazicki99@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.79.0"
+uvicorn = "^0.18.2"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^5.0.4"
+autopep8 = "^1.6.0"
+black = "^22.6.0"
+isort = "^5.10.1"
+pre-commit = "^2.20.0"
+
+[tool.black]
+line-length = 127
+exclude = "migrations/*"
+
+[tool.isort]
+profile = "black"
+line_length = 127
+known_third_party = ["requests", "django", "rest_framework", "fastapi"]
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+skip = ["manage.py", "venv", "migrations", "node_modules", ".env"]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

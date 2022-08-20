@@ -1,0 +1,10 @@
+static
+README.md
+docker-compose*
+.git
+.gitignore
+.idea
+.vscode
+.docker_volumes
+*.sql
+.pre-commit-config.yaml
