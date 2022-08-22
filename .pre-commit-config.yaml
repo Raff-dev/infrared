@@ -1,5 +1,4 @@
-
-files: "back"
+files: "app"
 repos:
 -   repo: https://github.com/myint/autoflake
     rev: "v1.4"
@@ -32,3 +31,8 @@ repos:
     rev: "22.3.0"
     hooks:
     -   id: black
+
+-   repo: https://github.com/pre-commit/mirrors-mypy
+    rev: "v0.971"
+    hooks:
+    -   id: mypy
