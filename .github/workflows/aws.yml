@@ -24,12 +24,13 @@
 #    See the documentation for each action used below for the recommended IAM policies for this IAM user,
 #    and best practices on handling the access key credentials.
 
-name: Deploy to Amazon ECS
+name: Lint, Test and Deploy to Amazon ECS
 
 on:
   push:
     branches:
       - "main"
+      - "feature/*"
 
 env:
   AWS_REGION: eu-central-1                        # set this to your preferred AWS region, e.g. us-west-1
@@ -45,10 +46,32 @@ permissions:
   contents: read
 
 jobs:
+  code-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v3
+    - uses: pre-commit/action@v3.0.0
+    
+  test:
+    name: Run tests
+    runs-on: ubuntu-latest
+    needs: [code-check]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Build docker image and run tests in a container
+        run: |
+          docker build -t infrared .
+          docker run infrared pytest
+
   deploy:
-    name: Deploy
+    name: Deploy to production
     runs-on: ubuntu-latest
     environment: production
+    if: github.ref == 'refs/heads/main'
+    needs: [test]
 
     steps:
     - name: Checkout
@@ -74,7 +97,7 @@ jobs:
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./back
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --build-arg environment=production .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
