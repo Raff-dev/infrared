@@ -1,8 +1,13 @@
 FROM python:3.10-alpine
 
+# TODO change user for safety purposes
 ENV PYTHONUNBUFFERED 1
 
 ARG ENVIRONMENT=development
+
+RUN apk update && \
+    apk upgrade && \
+    apk add libpq-dev python3-dev gcc musl-dev
 
 RUN python3 -m pip install --upgrade pip && pip install poetry
 

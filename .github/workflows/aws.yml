@@ -64,8 +64,12 @@ jobs:
 
       - name: Build docker image and run tests in a container
         run: |
+          # spin up docker postgres image
+          docker run --name postgres --detach --env-file=.env.test postgres:13
+          docker ps
           docker build -t infrared .
-          docker run --env-file=".env.test" infrared pytest -s
+          # connect postgres container and run testing script
+          docker run --link postgres:postgres --env-file=.env.test infrared ./run_tests.sh
 
   deploy:
     name: Deploy to production
