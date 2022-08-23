@@ -65,7 +65,7 @@ jobs:
       - name: Build docker image and run tests in a container
         run: |
           docker build -t infrared .
-          docker run infrared pytest
+          docker run --env-file=".env.test" infrared pytest -s
 
   deploy:
     name: Deploy to production

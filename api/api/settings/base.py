@@ -4,7 +4,7 @@ from pathlib import Path
 import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # Read env
 env = environ.Env()
@@ -14,7 +14,7 @@ SECRET_KEY = env("SECRET_KEY", default="")
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 1048576 * 5  # accept max 5mb of data
 
-DEBUG = env("DEBUG", default=False)
+DEBUG = int(env("DEBUG", default=0))
 
 ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(",")
 

@@ -1,5 +1,7 @@
 FROM python:3.10-alpine
 
+ENV PYTHONUNBUFFERED 1
+
 ARG ENVIRONMENT=development
 
 RUN python3 -m pip install --upgrade pip && pip install poetry
@@ -18,9 +20,8 @@ RUN poetry config virtualenvs.create false --local \
     poetry install; \
     fi
 
-ADD ./app /code/app/
+ADD ./api /code/api/
 
 EXPOSE 80
-
-# TODO remove --reload on production
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80", "--reload"]
+WORKDIR /code/api/
+CMD ["gunicorn", "--bind", "0.0.0.0:80", "api.wsgi"]
