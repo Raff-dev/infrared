@@ -1,11 +1,25 @@
-version: '3.3'
-
+version: "3.8"
+volumes:
+  postgres_data: {}
 services:
+  database:
+    image: postgres:13
+    volumes:
+      - "postgres_data:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - ${POSTGRES_PORT}:5432
+
   backend:
     build: "."
     ports:
-      - "8000:80"
+      - 8000:80
     volumes:
-      - ./api/:/api/
+      - ./api/:/code/api/
     env_file:
       - .env
+    depends_on:
+      - database
