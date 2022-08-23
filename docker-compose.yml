@@ -6,6 +6,6 @@ services:
     ports:
       - "8000:80"
     volumes:
-      - ./app/:/app/
+      - ./api/:/api/
     env_file:
       - .env
