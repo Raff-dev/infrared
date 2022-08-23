@@ -1,4 +1,4 @@
-files: "app"
+files: "api"
 repos:
 -   repo: https://github.com/myint/autoflake
     rev: "v1.4"
