@@ -15,10 +15,11 @@ services:
 
   backend:
     build: "."
+    command: python manage.py runserver 0.0.0.0:80
     ports:
       - 8000:80
     volumes:
-      - ./api/:/code/api/
+      - ./api:/code/api
     env_file:
       - .env
     depends_on:

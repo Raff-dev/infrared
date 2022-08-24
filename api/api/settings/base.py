@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 
 import environ
@@ -10,9 +9,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 env = environ.Env()
 env.read_env(BASE_DIR.parent / ".env")
 
-SECRET_KEY = env("SECRET_KEY", default="")
-
 DATA_UPLOAD_MAX_MEMORY_SIZE = 1048576 * 5  # accept max 5mb of data
+IMAGE_QUALITY = 80
+
+# Uncomment for preserving uploaded image format
+# THUMBNAIL_PRESERVE_FORMAT = True
+
+SECRET_KEY = env("SECRET_KEY", default="")
 
 DEBUG = int(env("DEBUG", default=0))
 
@@ -28,6 +31,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # third party
     "rest_framework",
+    "sorl.thumbnail",
     # local
     "infrared",
 ]
@@ -114,7 +118,7 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = BASE_DIR / "media"
 MEDIA_URL = "/media/"
 
 # Default primary key field type

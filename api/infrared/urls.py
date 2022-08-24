@@ -1,7 +1,13 @@
-from django.urls import path
+from django.urls import include, path
+from rest_framework.routers import DefaultRouter
 
-from infrared import views
+from infrared.views import ImageViewset, index
+
+router = DefaultRouter()
+router.register("images", ImageViewset)
+
 
 urlpatterns = [
-    path("", views.index, name="index"),
+    path("", index, name="index"),
+    path("", include(router.urls)),
 ]

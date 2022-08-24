@@ -14,6 +14,8 @@ django-environ = "^0.9.0"
 pytest-django = "^4.5.2"
 gunicorn = "^20.1.0"
 psycopg2-binary = "^2.9.3"
+Pillow = "^9.2.0"
+sorl-thumbnail = "^12.8.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^5.0.4"
@@ -28,12 +30,12 @@ absolufy-imports = "^0.3.1"
 pytest-django = "^4.5.2"
 
 [tool.black]
-line-length = 127
+line-length = 88
 exclude = "migrations/*"
 
 [tool.isort]
 profile = "black"
-line_length = 127
+line_length = 88
 known_third_party = ["requests", "django", "rest_framework"]
 sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
 skip = ["manage.py", "venv", "migrations", "node_modules", ".env"]
@@ -42,7 +44,11 @@ skip = ["manage.py", "venv", "migrations", "node_modules", ".env"]
 python_version = "3.10"
 ignore_missing_imports = true
 allow_redefinition = true
-exclude = ["manage.py$", "venv", "migrations"]
+exclude = ["manage.py$", "venv"]
+
+[[tool.mypy.overrides]]
+module = "*.migrations.*"
+ignore_errors = true
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
