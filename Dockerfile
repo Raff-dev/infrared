@@ -7,7 +7,7 @@ ARG ENVIRONMENT=development
 
 RUN apk update && \
     apk upgrade && \
-    apk add libpq-dev python3-dev gcc musl-dev
+    apk add libpq-dev python3-dev gcc musl-dev jpeg-dev zlib-dev
 
 RUN python3 -m pip install --upgrade pip && pip install poetry
 
