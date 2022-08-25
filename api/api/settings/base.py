@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "sorl.thumbnail",
     "storages",
+    "drf_yasg",
     # local
     "infrared",
 ]

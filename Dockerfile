@@ -17,6 +17,7 @@ WORKDIR /code/
 # add package dependencies separately from the code to utilize caching
 ADD pyproject.toml poetry.lock /code/
 
+# TODO build wheels with poetry and install with pip
 # install dev dependencies based on environment varaible
 RUN poetry config virtualenvs.create false --local \
     && if [ ${ENVIRONMENT} == production ]; then \
