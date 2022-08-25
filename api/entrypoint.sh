@@ -7,6 +7,11 @@ done
 
 echo "PostgreSQL started"
 
+echo "Collect static files"
+python manage.py collectstatic --noinput
+
+echo "Applying migrations"
 python manage.py migrate
 
+echo "Starting server"
 gunicorn --bind 0.0.0.0:80 api.wsgi
