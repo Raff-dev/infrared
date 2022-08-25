@@ -1,6 +1,6 @@
 FROM python:3.10-alpine
 
-# TODO change user for safety purposes
+# TODO change user for safety measures
 ENV PYTHONUNBUFFERED 1
 
 ARG ENVIRONMENT=development
@@ -29,4 +29,5 @@ ADD ./api /code/api/
 
 EXPOSE 80
 WORKDIR /code/api/
-CMD ["gunicorn", "--bind", "0.0.0.0:80", "api.wsgi"]
+CMD ./entrypoint.sh
+
