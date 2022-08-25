@@ -40,7 +40,6 @@ def test_resize_image(test_image, image_upload_factory):
     image_upload = image_upload_factory(test_image)
     resized_image = serializer.resize_image(image_upload.image)
 
-    # BASE_DIR / path does not work properly for some reason
     file_path = str(settings.BASE_DIR) + "/" + resized_image.url
     with Image.open(file_path) as image:
         assert (width, height) == image.size
@@ -60,7 +59,10 @@ def test_view_resize(test_image, image_upload_factory):
     assert "image" in res.json()
 
     data = res.json()
-    file_path = str(settings.BASE_DIR) + "/" + data["image"]
+
+    # yeah, looks funky, but we need to separate file path from image url
+    file_path = settings.MEDIA_URL + data["image"].split(settings.MEDIA_URL)[1]
+    file_path = str(settings.BASE_DIR) + "/" + file_path
     with Image.open(file_path) as resized_image:
         assert (width, height) == resized_image.size
 

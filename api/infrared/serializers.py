@@ -12,10 +12,6 @@ class ImageUploadSerializer(serializers.ModelSerializer):
         model = ImageUpload
         fields = ["id", "image"]
 
-    def create(self, validated_data: dict):
-        image_upload = super().create(validated_data)
-        return image_upload
-
 
 class ImageResponseSerializer(serializers.Serializer):
     image = serializers.ImageField()
@@ -28,9 +24,10 @@ class ResizeParamSerializer(serializers.Serializer):
     height = serializers.IntegerField()
     crop = serializers.CharField()
 
-    def __init__(self, data: dict, *args, **kwargs):
-        params = {key: value for key, value in data.items() if key in self.get_fields()}
-        super().__init__(data=params, *args, **kwargs)
+    def __init__(self, data: dict | None = None, *args, **kwargs):
+        if data:
+            data = {key: data.get(key) for key in self.get_fields()}
+        super().__init__(data=data, *args, **kwargs)
 
     def resize_image(self, image: ImageFieldFile) -> ImageFile:
         data = self.data
