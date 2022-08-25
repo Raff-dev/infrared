@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db.models.fields.files import ImageFieldFile
 from rest_framework import serializers
 from sorl.thumbnail import get_thumbnail
+from sorl.thumbnail.images import ImageFile
 
 from infrared.models import ImageUpload
 
@@ -21,19 +22,20 @@ class ImageResponseSerializer(serializers.Serializer):
 
 
 class ResizeParamSerializer(serializers.Serializer):
-    """Used to validate query params and image resizing using sorl.thumbnal"""
+    """Used to validate query params and image resizing using sorl-thumbnal"""
 
     width = serializers.IntegerField()
     height = serializers.IntegerField()
     crop = serializers.CharField()
 
-    def __init__(self, data, *args, **kwargs):
+    def __init__(self, data: dict, *args, **kwargs):
         params = {key: value for key, value in data.items() if key in self.get_fields()}
-        return super().__init__(data=params, *args, **kwargs)
+        super().__init__(data=params, *args, **kwargs)
 
-    def resize_image(self, image: ImageFieldFile):
+    def resize_image(self, image: ImageFieldFile) -> ImageFile:
         data = self.data
-        width, height, crop = data["width"], data["height"], data["crop"]
+        width, height, crop = [data[key] for key in ["width", "height", "crop"]]
+        width, height = min(width, image.width), min(height, image.height)
 
         return get_thumbnail(
             image,
