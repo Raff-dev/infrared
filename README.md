@@ -96,7 +96,6 @@ Here are some helpful poetry commands in case you need to alter the dependencies
 ! Make sure you have `DJANGO_SETTINGS_MODULE=api.settings.local` specified in your .env or container environment !
 
     docker-compose run backend pytest -s
----
 
 ## Pre-commit
 
