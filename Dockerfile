@@ -1,34 +1,38 @@
-FROM python:3.10-alpine
+FROM python:3.10-alpine as requirements-stage
 
-# TODO change user for safety measures
 ENV PYTHONUNBUFFERED 1
 
-ARG ENVIRONMENT=development
-
-RUN apk update && \
-    apk upgrade && \
-    apk add libpq-dev python3-dev gcc musl-dev jpeg-dev zlib-dev
+WORKDIR /tmp
 
 RUN python3 -m pip install --upgrade pip && pip install poetry
 
-RUN mkdir /code
-WORKDIR /code/
-
 # add package dependencies separately from the code to utilize caching
-ADD pyproject.toml poetry.lock /code/
+ADD pyproject.toml poetry.lock /tmp/
 
-# TODO build wheels with poetry and install with pip
-# install dev dependencies based on environment varaible
-RUN poetry config virtualenvs.create false --local \
-    && if [ ${ENVIRONMENT} == production ]; then \
-    poetry install --no-dev; \
-    else \
-    poetry install; \
-    fi
+# We don't need to have Poetry and its dependencies installed in the final image.
+# To keep the image small - we will use pip to install dependencies,
+# and poetry just for requirements generation.
+RUN poetry export -f requirements.txt \
+    --output requirements.txt \
+    --without-hashes \
+    $(test "$ENVIRONMENT" == production && echo "--no-dev")
+
+FROM python:3.10-alpine
+
+WORKDIR /code/api/
+
+RUN apk update && \
+    apk upgrade && \
+    apk -y add --no-cache \
+    libpq-dev python3-dev gcc musl-dev jpeg-dev zlib-dev
+
+COPY --from=requirements-stage /tmp/requirements.txt /code/api/requirements.txt
+
+RUN pip install --no-cache-dir --upgrade -r /code/api/requirements.txt
 
 ADD ./api /code/api/
 
 EXPOSE 80
-WORKDIR /code/api/
+
 CMD ./entrypoint.sh
 

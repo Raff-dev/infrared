@@ -30,8 +30,7 @@ class ResizeParamSerializer(serializers.Serializer):
         super().__init__(data=data, *args, **kwargs)
 
     def resize_image(self, image: ImageFieldFile) -> ImageFile:
-        data = self.data
-        width, height, crop = [data[key] for key in ["width", "height", "crop"]]
+        width, height, crop = [self.data[key] for key in ["width", "height", "crop"]]
         width, height = min(width, image.width), min(height, image.height)
 
         return get_thumbnail(
