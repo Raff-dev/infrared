@@ -1,9 +1,9 @@
 # Infrared
-Infrared is a dockerized django web app infrastructure project.   
-Covers whole software development cycle from development to production.   
-Deployed on **AWS ECS** with **Github Actions** running as **CI/CD**.   
+Infrared is a dockerized django web app infrastructure project.
+Covers whole software development cycle from development to production.
+Deployed on **AWS ECS** with **Github Actions** running as **CI/CD**.
 
-The website is accesible under [**this link**](http://ec2-3-72-36-186.eu-central-1.compute.amazonaws.com:8000/). 
+The website is accesible under [**this link**](http://ec2-3-72-36-186.eu-central-1.compute.amazonaws.com:8000/).
 
 ---
 
@@ -42,22 +42,22 @@ The website is accesible under [**this link**](http://ec2-3-72-36-186.eu-central
 
 Build the Docker images:
 
-    docker-compose build
+    docker compose build
 
-For any actions concerning database usage like migrations, testing, creating superuser you're going to need the database.    
+For any actions concerning database usage like migrations, testing, creating superuser you're going to need the database.
 Here's how you can start it as a detached (running in background) container:
 
-    docker-compose up -d database
+    docker compose up -d database
 
 Do not forget to run migrations:
 
-    docker-compose run backend python manage.py migrate
+    docker compose run backend python manage.py migrate
 
 Run the development application:
 
-    docker-compose up backend
+    docker compose up backend
     # or alternatively run all the services at once
-    docker-compose up
+    docker compose up
 
 Access the server locally with port 8000:
 
@@ -92,10 +92,10 @@ Here are some helpful poetry commands in case you need to alter the dependencies
     poetry remove  # remove a dependency
     poetry update  # update dependency list
     poetry show    # list isntalled dependencies
-## Testing    
+## Testing
 ! Make sure you have `DJANGO_SETTINGS_MODULE=api.settings.local` specified in your .env or container environment !
 
-    docker-compose run backend pytest -s
+    docker compose run backend pytest -s
 
 ## Pre-commit
 
@@ -105,13 +105,13 @@ Here are some helpful poetry commands in case you need to alter the dependencies
 
 ## Django commands
 
-    docker-compose run backend python manage.py {your_command} {your_args}
+    docker compose run backend python manage.py {your_command} {your_args}
 ---
 
 ## Deployment & Checks
 
-Deployment as well as static code checks and running tests is fully automated using Github actions.   
-Push to `feature/*` and `main` branches triggers code checks and tests.   
+Deployment as well as static code checks and running tests is fully automated using Github actions.
+Push to `feature/*` and `main` branches triggers code checks and tests.
 Push to `main` branch automatically triggers deploy to `AWS ECS`.
 
 ---
