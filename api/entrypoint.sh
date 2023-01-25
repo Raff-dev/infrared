@@ -14,4 +14,4 @@ echo "Applying migrations"
 python manage.py migrate
 
 echo "Starting server"
-gunicorn --bind 0.0.0.0:80 api.wsgi
+gunicorn --bind 0.0.0.0:8000 api.wsgi
