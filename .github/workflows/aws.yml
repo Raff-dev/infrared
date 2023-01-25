@@ -75,8 +75,10 @@ jobs:
     name: Deploy to production
     runs-on: ubuntu-latest
     environment: production
-    if: github.ref == 'refs/heads/main'
-    needs: [test, manual]
+    # if: github.ref == 'refs/heads/main'
+    if: 0 == 1
+    needs: [test]
+
 
     steps:
     - name: Checkout
