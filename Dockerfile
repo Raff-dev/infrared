@@ -23,7 +23,7 @@ WORKDIR /code/api/
 
 RUN apk update && \
     apk upgrade && \
-    apk -y add --no-cache \
+    apk add --no-cache \
     libpq-dev python3-dev gcc musl-dev jpeg-dev zlib-dev
 
 COPY --from=requirements-stage /tmp/requirements.txt /code/api/requirements.txt
