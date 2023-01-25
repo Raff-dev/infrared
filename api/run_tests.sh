@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 while ! nc -z $POSTGRES_HOST $POSTGRES_PORT; do
     echo "Waiting for postgres..."
